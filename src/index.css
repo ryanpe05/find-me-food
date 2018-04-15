@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  color: white;
+  background-color: #1d2333;
+}
+
+a{
+	font-size: 15px;
+}
+
+.title{
+	font-size: 25px;
+}
+
+.welcome{
+	padding-top: 20px;
+	text-align: center;
+	font-size: 50px;
+}
+
+.listed{
+	text-align: center;
+}
+
+.userInput{
+	padding-top: 40px;
+	font-size: 40px;
+	text-align: center;
+	float: left;
+	width: 50%;
+}
+
+.textBox{
+	width: 50%;
+	height: 40px;
+	border-radius: 10px;
+	font-size: 35px;
+}
+
+.findFood{
+	margin-top: 20px;
+	width: 50%;
+	height: 40px;
+	border-radius: 10px;
+	font-size: 30px;
+	background-color: #8f9eb7;
+	border-style: none;
+	box-shadow: 1px 1px #888888;
+}
+
+.mapOutput{
+	padding-top: 40px;
+	font-size: 40px;
+	text-align: center;
+	float: right;
+	width: 50%;
+}
