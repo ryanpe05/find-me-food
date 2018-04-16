@@ -49,22 +49,26 @@ class Container extends React.Component {
 			console.log("we are fetching");
 		}
 		//this originally allowed for constant updates, but that isn't important for the demo
-		// this.watchID = navigator.geolocation.watchPosition((position)=>{
-		// 	this.setState({latitude: position.coords.latitude});
-		// 	this.setState({longitude: position.coords.longitude});
-		// })
+		this.watchID = navigator.geolocation.watchPosition((position)=>{
+			this.setState({latitude: position.coords.latitude});
+			this.setState({longitude: position.coords.longitude});
+		})
 		//fetch restaurants with our keyword near us that are open now
 	}
 
 	componentDidUpdate = () => {
 		this.props.onSubmit(this.state.places);
-		
+	}
+
+	componentWillReceiveProps() {
+		this.fetchResults();
+		this.props.onSubmit(this.state.places);
 	}
 
 	fetchResults(){
 		// fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
   		// .then(({ results }) => this.setState({ places: results }));
-		$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
+		$.getJSON(this.props.addr+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
       	.then(({ results }) => this.setState({ places: results }));
 	}	
 
@@ -89,10 +93,13 @@ export class UserInput extends React.Component{
 			buttonValue: "Find Me Chicken",
 			mapVal: null,
 			listVal: null,
+			crossorigin: "Try CrossOrigin",
+			starterURL: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.handleAPI = this.handleAPI.bind(this);
 		this.renderMap = this.renderMap.bind(this);
+		this.working = this.working.bind(this);
 	}
 
 	handleChange(event){
@@ -136,7 +143,17 @@ export class UserInput extends React.Component{
 	}
 
 	renderMap(){
-		this.setState({mapVal : <Container value = {this.state.value} onSubmit = {this.handleAPI}/>});
+		this.setState({mapVal : <Container value = {this.state.value} onSubmit = {this.handleAPI} addr = {this.state.starterURL}/>});
+	}
+
+	working(){
+		if(this.state.crossorigin == "Try CrossOrigin"){
+			this.setState({crossorigin: "Disable CrossOrigin"});
+			this.setState({starterURL: 'https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='});
+		}else{
+			this.setState({crossorigin: "Try CrossOrigin"});
+			this.setState({starterURL: 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='});
+		}
 	}
 
 	render(){
@@ -148,6 +165,8 @@ export class UserInput extends React.Component{
 					<input className = "textBox" type = "text" placeholder = "Ex. Chicken" value = {this.state.value} onChange = {this.handleChange}/>
 					<br/>
 					<button className = "findFood" onClick ={this.renderMap}>{this.state.buttonValue}</button>
+					<br/>
+					<button className = "findFood" onClick ={this.working}>{this.state.crossorigin}</button>
 					<br/>
 					<div>{this.state.listVal}</div>
 				</div>
@@ -161,7 +180,7 @@ export default class Screen extends Component{
 	render(){
 		return(
 			<div>
-				<div className = "welcome">Hungry? Select a Food Below</div>
+				<div className = "welcome">Hungry? Select a Food Below!</div>
 			      <div><UserInput /></div>
 			</div>
 		);
