@@ -42,12 +42,9 @@ export default class MapContainer extends Component {
             position: {lat: latArr[i], lng: longArr[i]}, // sets position of marker to specified location
             map: this.map, // sets markers to appear on the map we just created on line 35
             title: nameArr[i], // the title of the marker is set to the name of the location
-            label: String(i)
+            label: String(i+1)
           });
         }
-        console.log(nameArr);
-        console.log(latArr);
-        console.log(longArr);
       }
     }
   }

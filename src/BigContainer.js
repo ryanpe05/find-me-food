@@ -12,7 +12,7 @@ class BigContainer extends Component{
 	    );
   }
 }
-//<Route path="/" render={(props) => }/>
+
 export default GoogleApiWrapper({
   apiKey: 'AIzaSyCknpX-wcDshh-XWHlPNSIDFa8TOjbm_YA',
   libraries: ['visualization']

@@ -19,8 +19,8 @@ class Container extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			latitude: 'unknown',
-			longitude: 'unknown',
+			latitude: 33.7845,
+			longitude: -84.3455216,
 			places: [],
 		};
 		this.fetchResults = this.fetchResults.bind(this);
@@ -34,12 +34,19 @@ class Container extends React.Component {
 				(position) => {
 					this.setState({latitude: position.coords.latitude});
 					this.setState({longitude: position.coords.longitude});
+					console.log("we have a location");
+					console.log(position.coords.longitude);
+					console.log(position.coords.latitude);
 					this.fetchResults();
 					this.props.onSubmit(this.state.places);
 				},
 				(error) => alert(error.message),
 				{enableHighAccuracy: false, timeout: 30000, maximumAge: 1000}
 			);
+		}
+		if(this.state.latitude !== 'unknown'){
+			this.fetchResults();
+			console.log("we are fetching");
 		}
 		//this originally allowed for constant updates, but that isn't important for the demo
 		// this.watchID = navigator.geolocation.watchPosition((position)=>{
@@ -49,14 +56,15 @@ class Container extends React.Component {
 		//fetch restaurants with our keyword near us that are open now
 	}
 
-	componentDidUpdate(){
+	componentDidUpdate = () => {
 		this.props.onSubmit(this.state.places);
+		
 	}
 
 	fetchResults(){
 		// fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
   		// .then(({ results }) => this.setState({ places: results }));
-		$.getJSON('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
+		$.getJSON('https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
       	.then(({ results }) => this.setState({ places: results }));
 	}	
 
@@ -117,11 +125,11 @@ export class UserInput extends React.Component{
         	console.log(nameArr);
 	        this.setState({listVal: 
 	        	<ol className = "listed">
-	        		<li><div className = "title">{nameArr[0]}</div><a href = {urlArr[0]}>Take Me There</a></li>
-	        		<li><div className = "title">{nameArr[1]}</div><a href = {urlArr[1]}>Take Me There</a></li>
-	        		<li><div className = "title">{nameArr[2]}</div><a href = {urlArr[2]}>Take Me There</a></li>
-	        		<li><div className = "title">{nameArr[3]}</div><a href = {urlArr[3]}>Take Me There</a></li>
-	        		<li><div className = "title">{nameArr[4]}</div><a href = {urlArr[4]}>Take Me There</a></li>
+	        		<li><div className = "title">{nameArr[0]}: </div><a href = {urlArr[0]}>Take Me There</a></li>
+	        		<li><div className = "title">{nameArr[1]}: </div><a href = {urlArr[1]}>Take Me There</a></li>
+	        		<li><div className = "title">{nameArr[2]}: </div><a href = {urlArr[2]}>Take Me There</a></li>
+	        		<li><div className = "title">{nameArr[3]}: </div><a href = {urlArr[3]}>Take Me There</a></li>
+	        		<li><div className = "title">{nameArr[4]}: </div><a href = {urlArr[4]}>Take Me There</a></li>
 	        	</ol>
 	        });
 	    }
