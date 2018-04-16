@@ -19,7 +19,7 @@ class Container extends React.Component {
 	constructor(props){
 		super(props);
 		this.state = {
-			latitude: 33.7845,
+			latitude: 33.7845, //default coordinates so we have something to load
 			longitude: -84.3455216,
 			places: [],
 		};
@@ -29,6 +29,7 @@ class Container extends React.Component {
 	watchID: ?number = null;
 
 	componentDidMount = () => {
+		//find the user's actual location if we can
 		if (navigator && navigator.geolocation){
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
@@ -45,29 +46,30 @@ class Container extends React.Component {
 			);
 		}
 		if(this.state.latitude !== 'unknown'){
+			//fetch restaurants with our keyword near us that are open now
 			this.fetchResults();
 			console.log("we are fetching");
 		}
-		//this originally allowed for constant updates, but that isn't important for the demo
+		//this allows for constant location updates
 		this.watchID = navigator.geolocation.watchPosition((position)=>{
 			this.setState({latitude: position.coords.latitude});
 			this.setState({longitude: position.coords.longitude});
 		})
-		//fetch restaurants with our keyword near us that are open now
 	}
 
 	componentDidUpdate = () => {
+		//find new places if the user chooses
 		this.props.onSubmit(this.state.places);
 	}
 
 	componentWillReceiveProps() {
+		//update when parent updates
 		this.fetchResults();
 		this.props.onSubmit(this.state.places);
 	}
 
+	//api request
 	fetchResults(){
-		// fetch('https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
-  		// .then(({ results }) => this.setState({ places: results }));
 		$.getJSON(this.props.addr+this.state.latitude+','+this.state.longitude+'&type=restaurant&keyword='+this.props.value+'&key='+placesAPIKey+'&rankby=distance&opennow/')
       	.then(({ results }) => this.setState({ places: results }));
 	}	
@@ -103,6 +105,7 @@ export class UserInput extends React.Component{
 	}
 
 	handleChange(event){
+		//handles changes to the text field
 		if(event.target.value === ''){
 			this.setState({buttonValue: "Find Me Chicken"});
 			this.setState({value: ''});
@@ -114,6 +117,7 @@ export class UserInput extends React.Component{
 	}
 
 	handleAPI = (placeArr) => {
+		//formats data from api
 		console.log("handleAPI");
 		console.log(placeArr);
 		if(Array.isArray(placeArr) && placeArr.length){
@@ -143,10 +147,12 @@ export class UserInput extends React.Component{
 	}
 
 	renderMap(){
+		//renders the map on user input
 		this.setState({mapVal : <Container value = {this.state.value} onSubmit = {this.handleAPI} addr = {this.state.starterURL}/>});
 	}
 
 	working(){
+		//tries to use crossorigin.me as a proxy for api calls 
 		if(this.state.crossorigin == "Try CrossOrigin"){
 			this.setState({crossorigin: "Disable CrossOrigin"});
 			this.setState({starterURL: 'https://crossorigin.me/https://maps.googleapis.com/maps/api/place/nearbysearch/json?location='});

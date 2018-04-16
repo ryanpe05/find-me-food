@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom'
 
+// a large majority of this class was taken from Matthew Thorry and referenced in his blog:
+// https://medium.com/front-end-hacking/using-the-google-maps-javascript-api-in-a-react-project-b3ed734375c6
+// comments were also left for clarity
+
 export default class MapContainer extends Component {
 
   componentDidUpdate(prevProps, prevState) {

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import MapContainer from './MapContainer';
 import { GoogleApiWrapper } from 'google-maps-react';
 
+// another container because Google Maps cannot work without it
+
 class BigContainer extends Component{
 	render(){
 	    return (
