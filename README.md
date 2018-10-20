@@ -1,3 +1,11 @@
+The demo can be viewed <a href="https://ryanpe05.github.io/find-me-food/">here</a>.
+Due to development time constraints, you must enable CORS on your browser for the code to function 
+(or click Try CrossOrigin on the app, but this solution does not always work)
+
+<a href="https://chrome.google.com/webstore/detail/allow-control-allow-origi/nlfbmbojpeacfghkpbjhddihlkkiljbi?hl=en">Here</a> is a CORS extension for Chrome.
+
+The following text is the default React ReadMe
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
